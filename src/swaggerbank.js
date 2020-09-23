@@ -81,10 +81,10 @@ class API {
   * @return {Object}   Returns an object where the keys are the referenced object names and the values are respective schema bodies
   */
   getAllObjectDefinitions () {
-    if (this.apiObject.definitions == null) {
-      throw new Error('Please provide any object references inside a \'definitions\' section inside your swagger spec');
+    if (this.apiObject.components == null || this.apiObject.components.schemas == null) {
+      throw new Error('Please provide any object references inside a \'components.schemas\' section inside your swagger spec');
     }
-    return this.apiObject.definitions;
+    return this.apiObject.components.schemas;
   }
 
   /**
@@ -263,7 +263,7 @@ class API {
    */
   getApiBasePath () {
     if (this.apiObject.basePath == null) {
-      return '/';
+      return '';
     }
     return this.apiObject.basePath;
   }
@@ -320,7 +320,6 @@ class API {
 
     // this paths object contains all the information about our apis API routes, parameters, response schemas, examples, etc
     const paths = this.apiObject.paths;
-
     // get the produces type (needed later to extract example from response object)
     const producesType = this.getApiProducesType();
 
@@ -330,21 +329,22 @@ class API {
       for (const verb in paths[route]) {
         // for each of the possible responses that can be returned from this path (uri + verb)...
         for (const status in paths[route][verb].responses) {
+
           const routeParametersObject = this.getParametersObject({ 'uri': route, 'verb': verb });
 
           const newUrl = this.getApiBasePath() + urlManager.RegExifyURL(route, routeParametersObject);
-          // console.log(colors.cyan('newUrl: ') + colors.green(newUrl));
+          console.log(colors.cyan('newUrl: ') + colors.green(newUrl));
           const method = verb.toUpperCase();
+
           // ensure that our status is a Javascript number
           const statusCode = Number(status);
 
           // If we have a response defined for error codes (anything other than 200 or 201) we will
           // NOT include them in our Imposter due to mountebanks round-robin style of returning multiple
           // responses for a single path
-          if ((statusCode !== 200) && (statusCode !== 201) && (statusCode !== 'default')) continue;
+          if ((statusCode !== 200) && (statusCode !== 201)) continue;
 
-          let responseObject = paths[route][verb].responses[statusCode];
-
+          let responseObject = paths[route][verb].responses[status];
           // If our response object is actually just a reference to a reference object that is defined globally...
           if (responseObject.$ref !== undefined) {
             const referencedResponseName = responseObject.$ref.replace('#/responses/', '');
@@ -352,14 +352,15 @@ class API {
             responseObject = apiResponses[referencedResponseName];
           }
 
-          const responseSchema = responseObject.schema;
+          const responseSchema = responseObject.content['application/json'].schema;
           // if the response doesn't define any kind of schema, we assume it is a empty response and we continue
-          if ((responseSchema === undefined) || (responseSchema === null)) {
+          if ((responseObject.content === undefined) || (responseObject.content === null)) {
             continue;
           }
 
           // EXAMPLE MODE
           if (process.env.PROP_GEN === 'example') {
+            // пройтись по properties и собрать все example
             if (responseObject.examples == null) {
               throw new Error(`ERROR: process.env.PROP_GEN was set to example but the response for ${route} ${verb} ${statusCode} did NOT contain an examples section`);
             }
@@ -373,7 +374,7 @@ class API {
           else {
             let referencedTemplate;
             if (responseSchema.$ref === undefined) {
-              // console.warn(colors.yellow('WARNING:  This response object has no $ref tag. The response schema must be defined in place... This is not recommended...'));
+              console.warn(colors.yellow('WARNING:  This response object has no $ref tag. The response schema must be defined in place... This is not recommended...'));
               referencedTemplate = this.constructTemplateForRef(responseSchema, 'property');
             }
             else {
@@ -400,6 +401,7 @@ class API {
     const Imposter = new mountebankHelper.Imposter({ 'imposterPort': imposterPortNumber });
     console.log(`[SWAGGER-BANK] Using ${((process.env.PROP_GEN === undefined) ? ('random') : (process.env.PROP_GEN)).toUpperCase()} property generation when creating response`);
     const allResponses = this.getAllResponsesForApi();
+    console.log(allResponses);
     allResponses.forEach(function (element) {
       Imposter.addRoute(element);
     });

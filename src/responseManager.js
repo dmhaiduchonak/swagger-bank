@@ -9,8 +9,8 @@ const btoa = require('btoa');
 
 const RANDOM_STRING_LENGTH = configOptions.randomStringLength;
 const RANDOM_ARRAY_LENGTH = configOptions.randomArrayLength;
-const MIN_NUM = configOptions.minNumber;
-const MAX_NUM = configOptions.maxNumber;
+const MIN_NUM = configOptions.minNumber || 0;
+const MAX_NUM = configOptions.maxNumber || 1000;
 
 function isSimpleType (type) {
   if (['number', 'string', 'integer', 'boolean'].indexOf(type) > -1) {
@@ -124,6 +124,7 @@ function generateString (formatType, possibleEnum) {
         staticProperty = configOptions['string-binary'];
         break;
       case 'uri':
+      case 'iri-reference':
         randomProperty = chance.url();
         staticProperty = configOptions['string-uri'];
         break;

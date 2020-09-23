@@ -23,22 +23,23 @@
     "chai": "^3.5.0",
     "chai-as-promised": "^5.3.0",
     "chai-subset": "^1.2.2",
-    "node-fetch": "^1.5.3",
-    "rewire": "^2.5.2",
+    "coveralls": "^2.11.9",
     "eslint": "^1.2.1",
     "istanbul": "^0.4.4",
-    "validator": "^5.4.0",
     "mocha": "^2.5.3",
     "mocha-lcov-reporter": "^1.2.0",
-    "coveralls": "^2.11.9"
+    "node-fetch": "^1.5.3",
+    "rewire": "^2.5.2",
+    "validator": "^5.4.0"
   },
   "dependencies": {
     "btoa": "1.1.2",
     "chance": "^1.0.3",
     "colors": "^1.1.2",
+    "command-line-args": "^5.1.1",
     "lodash": "^4.13.1",
     "moment": "2.17.1",
     "mountebank-helper": "^1.2.1",
-    "swagger-parser": "^3.4.1"
+    "swagger-parser": "^9.0.0"
   }
 }

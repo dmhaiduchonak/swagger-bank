@@ -1,0 +1,1023 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Messenger API",
+        "version": "0.1.0",
+        "description": "Messenger API"
+    },
+    "paths": {
+        "/api/messenger/v1/backend/{_format}/{_locale}/chats": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "operationId": "getChatCollection",
+                "parameters": [
+                    {
+                        "name": "_format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "_locale",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "ru",
+                                "en"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "filter",
+                        "description": "Resource filters, serialized in json format",
+                        "in": "query",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                ],
+                "summary": "Retrieves the collection of Chat resources.",
+                "responses": {
+                    "200": {
+                        "description": "Chat collection response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Chat"
+                                            }
+                                        },
+                                        "_meta": {
+                                            "type": "object",
+                                            "description": "Meta information",
+                                            "properties": {
+                                                "totalCount": {
+                                                    "type": "integer",
+                                                    "description": "Total items count",
+                                                    "example": 55
+                                                }
+                                            },
+                                            "required": [
+                                                "totalCount"
+                                            ]
+                                        },
+                                        "_links": {
+                                            "type": "object",
+                                            "description": "Links object",
+                                            "properties": {
+                                                "self": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "href": {
+                                                            "type": "string",
+                                                            "description": "Self link",
+                                                            "example": "/api/messenger/v1/backend/{_format}/{_locale}/chats"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "href"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "self"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "items",
+                                        "_meta",
+                                        "_links"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Error",
+                                    "description": "Error response",
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "description": "Error marker",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "Error code",
+                                            "example": "bad_request"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Error type",
+                                            "enum": [
+                                                "error",
+                                                "critical"
+                                            ],
+                                            "example": "error"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "code",
+                                        "type"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/messenger/v1/backend/{_format}/{_locale}/chats/{chatId}/messages": {
+            "get": {
+                "summary": "Get chat history",
+                "description": "Method returns history message of specified chat",
+                "tags": [
+                    "Chat"
+                ],
+                "parameters": [
+                    {
+                        "name": "chatId",
+                        "in": "path",
+                        "description": "Id of chat",
+                        "type": "string",
+                        "required": true
+                    },
+                    {
+                        "name": "_format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "_locale",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "ru",
+                                "en"
+                            ]
+                        }
+                    }
+                ],
+                "operationId": "getMessageCollection",
+                "responses": {
+                    "200": {
+                        "description": "Message collection response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "properties": {
+                                        "items": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/Message:a834dd71a16f008f5798376ec04c7a2d"
+                                            }
+                                        },
+                                        "_meta": {
+                                            "type": "object",
+                                            "description": "Meta information",
+                                            "properties": {
+                                                "totalCount": {
+                                                    "type": "integer",
+                                                    "description": "Total items count",
+                                                    "example": 55
+                                                }
+                                            },
+                                            "required": [
+                                                "totalCount"
+                                            ]
+                                        },
+                                        "_links": {
+                                            "type": "object",
+                                            "description": "Links object",
+                                            "properties": {
+                                                "self": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "href": {
+                                                            "type": "string",
+                                                            "description": "Self link",
+                                                            "example": "/api/messenger/v1/backend/{_format}/{_locale}/chats/{chatId}/messages"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "href"
+                                                    ]
+                                                }
+                                            },
+                                            "required": [
+                                                "self"
+                                            ]
+                                        }
+                                    },
+                                    "required": [
+                                        "items",
+                                        "_meta",
+                                        "_links"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Error",
+                                    "description": "Error response",
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "description": "Error marker",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "Error code",
+                                            "example": "bad_request"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Error type",
+                                            "enum": [
+                                                "error",
+                                                "critical"
+                                            ],
+                                            "example": "error"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "code",
+                                        "type"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/messenger/v1/backend/{_format}/{_locale}/chats/{id}": {
+            "get": {
+                "tags": [
+                    "Chat"
+                ],
+                "operationId": "getChatItem",
+                "parameters": [
+                    {
+                        "name": "_format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "_locale",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "ru",
+                                "en"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "summary": "Retrieves a Chat resource.",
+                "responses": {
+                    "200": {
+                        "description": "Chat resource response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Chat"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Error",
+                                    "description": "Error response",
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "description": "Error marker",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "Error code",
+                                            "example": "bad_request"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Error type",
+                                            "enum": [
+                                                "error",
+                                                "critical"
+                                            ],
+                                            "example": "error"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "code",
+                                        "type"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/messenger/v1/backend/{_format}/{_locale}/messages": {
+            "post": {
+                "summary": "Add message",
+                "description": "Add new message to target chat",
+                "tags": [
+                    "Message"
+                ],
+                "operationId": "addMessageCollection",
+                "parameters": [
+                    {
+                        "name": "_format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "_locale",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "ru",
+                                "en"
+                            ]
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Message resource created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Message:2d2ca50eb783a32dc3ce8ff9d316cb65"
+                                }
+                            }
+                        },
+                        "links": {
+                            "GetMessageItem": {
+                                "parameters": {
+                                    "id": "$response.body#/id"
+                                },
+                                "operationId": "getMessageItem",
+                                "description": "The `id` value returned in the response can be used as the `id` parameter in `GET /api/messenger/v1/backend/{_format}/{_locale}/messages/{id}`."
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Error",
+                                    "description": "Error response",
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "description": "Error marker",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "Error code",
+                                            "example": "bad_request"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Error type",
+                                            "enum": [
+                                                "error",
+                                                "critical"
+                                            ],
+                                            "example": "error"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "code",
+                                        "type"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Validation error",
+                                    "description": "Validation error response",
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "description": "Error marker",
+                                            "enum": [
+                                                true
+                                            ],
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "Error code",
+                                            "enum": [
+                                                "invalid_data"
+                                            ],
+                                            "example": "invalid_data"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Error type",
+                                            "enum": [
+                                                "error"
+                                            ],
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "description": "Array with validation errors",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "field": {
+                                                        "type": "string",
+                                                        "description": "Field name"
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "description": "Validation error description"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "field",
+                                                    "message"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "code",
+                                        "type",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Error",
+                                    "description": "Error response",
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "description": "Error marker",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "Error code",
+                                            "example": "bad_request"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Error type",
+                                            "enum": [
+                                                "error",
+                                                "critical"
+                                            ],
+                                            "example": "error"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "code",
+                                        "type"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                },
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Message:d49ea670bf234c334f57b70e5a6a92f3"
+                            }
+                        }
+                    },
+                    "description": "The new Message resource"
+                }
+            }
+        },
+        "/api/messenger/v1/backend/{_format}/{_locale}/messages/{id}": {
+            "get": {
+                "summary": "Get Message",
+                "description": "Method returns message with specified id",
+                "tags": [
+                    "Message"
+                ],
+                "operationId": "getMessageItem",
+                "parameters": [
+                    {
+                        "name": "_format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "_locale",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "ru",
+                                "en"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Message resource response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Message:a834dd71a16f008f5798376ec04c7a2d"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Error",
+                                    "description": "Error response",
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "description": "Error marker",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "Error code",
+                                            "example": "bad_request"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Error type",
+                                            "enum": [
+                                                "error",
+                                                "critical"
+                                            ],
+                                            "example": "error"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "code",
+                                        "type"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/messenger/v1/backend/{_format}/{_locale}/messages/{id}/confirm": {
+            "patch": {
+                "summary": "Confirm message",
+                "description": "Confirm message as readed by current user",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Id of message",
+                        "type": "int",
+                        "required": true
+                    },
+                    {
+                        "name": "_format",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "json"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "_locale",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "ru",
+                                "en"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "tags": [
+                    "Message"
+                ],
+                "operationId": "confirmMessageItem",
+                "responses": {
+                    "204": {
+                        "description": "Message resource updated"
+                    },
+                    "400": {
+                        "description": "Invalid input",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Error",
+                                    "description": "Error response",
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "description": "Error marker",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "Error code",
+                                            "example": "bad_request"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Error type",
+                                            "enum": [
+                                                "error",
+                                                "critical"
+                                            ],
+                                            "example": "error"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "code",
+                                        "type"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Resource not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Error",
+                                    "description": "Error response",
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "description": "Error marker",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "Error code",
+                                            "example": "bad_request"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Error type",
+                                            "enum": [
+                                                "error",
+                                                "critical"
+                                            ],
+                                            "example": "error"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "code",
+                                        "type"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Validation error",
+                                    "description": "Validation error response",
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "description": "Error marker",
+                                            "enum": [
+                                                true
+                                            ],
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "Error code",
+                                            "enum": [
+                                                "invalid_data"
+                                            ],
+                                            "example": "invalid_data"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Error type",
+                                            "enum": [
+                                                "error"
+                                            ],
+                                            "example": "error"
+                                        },
+                                        "data": {
+                                            "type": "array",
+                                            "description": "Array with validation errors",
+                                            "items": {
+                                                "type": "object",
+                                                "properties": {
+                                                    "field": {
+                                                        "type": "string",
+                                                        "description": "Field name"
+                                                    },
+                                                    "message": {
+                                                        "type": "string",
+                                                        "description": "Validation error description"
+                                                    }
+                                                },
+                                                "required": [
+                                                    "field",
+                                                    "message"
+                                                ]
+                                            }
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "code",
+                                        "type",
+                                        "data"
+                                    ]
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "Error response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                    "title": "Error",
+                                    "description": "Error response",
+                                    "properties": {
+                                        "error": {
+                                            "type": "boolean",
+                                            "description": "Error marker",
+                                            "example": true
+                                        },
+                                        "code": {
+                                            "type": "string",
+                                            "description": "Error code",
+                                            "example": "bad_request"
+                                        },
+                                        "type": {
+                                            "type": "string",
+                                            "description": "Error type",
+                                            "enum": [
+                                                "error",
+                                                "critical"
+                                            ],
+                                            "example": "error"
+                                        }
+                                    },
+                                    "required": [
+                                        "error",
+                                        "code",
+                                        "type"
+                                    ]
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Chat": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Id of chat.",
+                        "type": "string"
+                    },
+                    "lastMessageId": {
+                        "description": "Id of last message of current chat.",
+                        "type": "integer"
+                    },
+                    "users": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ChatUserDto"
+                        }
+                    }
+                }
+            },
+            "ChatUserDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Id of user.",
+                        "type": "integer"
+                    },
+                    "lastReadMessageId": {
+                        "description": "Id of last read message.",
+                        "type": "integer"
+                    }
+                }
+            },
+            "Message:2d2ca50eb783a32dc3ce8ff9d316cb65": {
+                "type": "object",
+                "description": "",
+                "properties": {
+                    "id": {
+                        "description": "Id of message.",
+                        "type": "integer"
+                    },
+                    "createdAt": {
+                        "description": "Date and time when message was saved.",
+                        "type": "string",
+                        "format": "date-time"
+                    }
+                }
+            },
+            "Message:a834dd71a16f008f5798376ec04c7a2d": {
+                "type": "object",
+                "description": "",
+                "properties": {
+                    "id": {
+                        "description": "Id of message.",
+                        "type": "integer"
+                    },
+                    "text": {
+                        "description": "Text of the message.",
+                        "type": "string"
+                    },
+                    "chatId": {
+                        "description": "Id of chat.",
+                        "type": "string"
+                    },
+                    "createdAt": {
+                        "description": "Date and time when message was saved.",
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "authorId": {
+                        "description": "Id of author of the message.",
+                        "type": "integer"
+                    }
+                }
+            },
+            "Message:d49ea670bf234c334f57b70e5a6a92f3": {
+                "type": "object",
+                "description": "",
+                "required": [
+                    "chatId",
+                    "text"
+                ],
+                "properties": {
+                    "chatId": {
+                        "description": "Id of chat.",
+                        "type": "string"
+                    },
+                    "text": {
+                        "description": "Text of the message.",
+                        "type": "string"
+                    }
+                }
+            }
+        }
+    }
+}
